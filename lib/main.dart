@@ -1,3 +1,4 @@
+import 'package:d_pinterest_clone/src/widgets/pinterest_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_pinterest_clone/src/pages/pinterest_page.dart';
@@ -9,7 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: PinterestPage(),
+      // home: PinterestPage(),
+      home: PinterestMenu(),
     );
   }
 }
