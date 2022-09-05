@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 //modelos del pinterest button
 class PinterestButton {
@@ -21,15 +22,27 @@ class PinterestMenu extends StatelessWidget {
     PinterestButton(icon: Icons.notification_add, onPressed: () { print('jean: Icono Notification');}),
     PinterestButton(icon: Icons.supervisor_account, onPressed: () { print('jean: Icono Supervise');}),
   ];
+
+  final bool canShow;
    
-  PinterestMenu({Key? key}) : super(key: key);
+  PinterestMenu({
+    Key? key, 
+    this.canShow = true
+  }) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _PinterestMenuBarBackground(
-          child: _MenuItems(menuItems: items),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => _MenuModelProvider(),
+      child: AnimatedPositioned(
+        bottom: canShow ? 0 : -65,
+        duration: Duration(milliseconds: 250),
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 500),
+          opacity: canShow ? 1 : 0,
+          child: _PinterestMenuBarBackground(
+            child: _MenuItems(menuItems: items),
+          ),
         ),
       ),
     );
@@ -49,9 +62,11 @@ class _PinterestMenuBarBackground extends StatelessWidget {
     return Container(
       width: 250,
       height: 60,
+      margin: EdgeInsets.only(bottom: 5),
+      // color: Colors.red,
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: BorderRadius.all(Radius.circular(25)),
         boxShadow: [
           BoxShadow(
             color: Colors.black38,
@@ -61,7 +76,7 @@ class _PinterestMenuBarBackground extends StatelessWidget {
           )
         ]
       ),
-      
+      child: child,
     );
   }
 }
@@ -99,16 +114,34 @@ class _PinterestMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final menuModelProvider = Provider.of<_MenuModelProvider>(context);
+    final itemSelected = menuModelProvider.itemSeleccionado;
+
     return GestureDetector(
-      onTap: item.onPressed,
+      onTap: (){
+        menuModelProvider.itemSeleccionado = index;
+        item.onPressed();
+      },
       behavior: HitTestBehavior.translucent,
       child: Container(
         child: Icon(
           item.icon,
-          size: 25,
-          color: Colors.blueGrey  
+          size: itemSelected == index ? 30 : 25,
+          color: itemSelected == index ? Colors.red[400] : Colors.blueGrey
         ),
       ),
     );
   }
+}
+
+
+class _MenuModelProvider with ChangeNotifier {
+  int _itemSeleccionado = 0;
+
+  int get itemSeleccionado => this._itemSeleccionado;
+  set itemSeleccionado(int index){
+    this._itemSeleccionado = index;
+    notifyListeners();
+  }
+
 }

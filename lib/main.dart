@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Material App',
       home: PinterestPage(),
-      // home: PinterestMenu(),
     );
   }
 }
