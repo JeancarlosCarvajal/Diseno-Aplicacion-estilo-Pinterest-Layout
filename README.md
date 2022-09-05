@@ -5,6 +5,6 @@ Diseno de Layout al estilo Pinterest
 ## Appearance Application
   
 ![Appearance 1](appearance/1.png) 
-<!-- ![Appearance 2](appearance/movie-2.gif)  -->
+![Appearance 2](appearance/movie-1.gif) 
 
 
